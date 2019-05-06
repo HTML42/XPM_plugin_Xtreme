@@ -65,6 +65,26 @@ class Xtreme {
         return trim($content);
     }
 
+    public static function assets_file($files = null) {
+        if (is_null($files)) {
+            $files = isset(Xtreme::$App->config['files']) ? Xtreme::$App->config['files'] : null;
+        }
+        if (strstr(Request::$requested_clean_path, '.min.')) {
+            $cache_filepath = Xtreme_cache . Request::$requested_clean_path;
+            if (is_file($cache_filepath)) {
+                $content = $cache_filepath;
+            } else {
+                Utilities::ensure_structure(Xtreme_cache);
+                $content = isset($files) ? Xtreme::deep_concat($files) : '';
+                //
+                file_put_contents($cache_filepath, $content);
+            }
+        } else {
+            $content = isset($files) ? Xtreme::deep_concat($files) : '';
+        }
+        return $content;
+    }
+
 }
 
 Xtreme::$version = file_get_contents(ROOT . 'version');

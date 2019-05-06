@@ -25,6 +25,13 @@ class Response {
         if (strlen($current_output) > 0) {
             $content = $current_output . $content;
         }
+        
+        if(Xtreme::$mode == 'page') {
+            if(ENV != 'dev') {
+                $content = preg_replace('/\.(css|js|png|jpg|gif)/isU', '.min.$1', $content);
+                $content = str_replace('.min.min', '.min', $content);
+            }
+        }
 
         self::header('Content-length: ' . strlen($content));
         self::header('Content-Type: ' . Xtreme::$App->config['mime'] . '; charset=' . Xtreme::$App->config['encoding'], 200);

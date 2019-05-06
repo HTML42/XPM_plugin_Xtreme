@@ -14,13 +14,21 @@ class App {
     public $page_content = null;
 
     public function __construct() {
+        $request_path_without_min = str_replace('.min.', '.', Request::$requested_clean_path);
         if (isset(Xtreme::$app_config[Request::$requested_clean_path])) {
             $this->config_raw = Xtreme::$app_config[Request::$requested_clean_path];
             $this->config = $this->config_raw + self::$default;
             if (isset(Xtreme::$app_config['_default']) && is_array(Xtreme::$app_config['_default'])) {
                 $this->config = $this->config + Xtreme::$app_config['_default'];
             }
+        } else if (isset(Xtreme::$app_config[$request_path_without_min])) {
+            $this->config_raw = Xtreme::$app_config[$request_path_without_min];
+            $this->config = $this->config_raw + self::$default;
+            if (isset(Xtreme::$app_config['_default']) && is_array(Xtreme::$app_config['_default'])) {
+                $this->config = $this->config + Xtreme::$app_config['_default'];
+            }
         }
+        //
         if (is_array($this->config)) {
             if (isset($this->config_raw['301']) || isset($this->config_raw['302'])) {
                 $this->config['mode'] = 'redirect';
