@@ -1,0 +1,104 @@
+html, html * {
+    box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+body * {
+    line-height: 1.4em;
+}
+body, input, button, select, textarea {
+    font-size: 14px;
+    font-weight: 300;
+    font-family: Helvetica, Arial, sans-serif;
+    color: @color_text;
+}
+html {
+    background-color: #F6F6F6;
+}
+//
+a {
+    text-decoration: none;
+    color: #000;
+    &:hover {
+        text-decoration: underline;
+    }
+}
+//
+main {
+    padding: (@header_height + @distance_small) @distance_small @distance_small;
+    min-height: calc(~"100vh - @{footer_height}");
+    max-width: @pagewidth;
+    margin: 0 auto;
+    article {
+        position: relative;
+        p, h1, h2, h3, h4 {
+            line-height: 1.4em;
+        }
+        h1 {
+            margin: 0 0 @distance_normal;
+        }
+        h2, h3, h4 {
+            margin: 0 0 @distance_small;
+        }
+        p {
+            margin: 0 0 @distance_tiny;
+            + h2 {
+                margin-top: @distance_normal;
+            }
+            + h3, + h4 {
+                margin-top: @distance_small;
+            }
+        }
+        address {
+            margin: 0 0 @distance_small;
+        }
+        .margin_top {
+            margin-top: @distance_normal;
+        }
+    }
+    h1 {
+        font-size: 30px;
+        font-weight: 700;
+    }
+    .footnote {
+        margin-top: @distance_big;
+        font-size: 12px;
+        color: @color_grey_dark;
+    }
+}
+footer {
+    height: @footer_height;
+    text-align: center;
+    #footer_navigation {
+        nav {
+
+        }
+        ul {
+            .clear_after();
+            .clean_list();
+            li, a {
+                display: inline-block;
+            }
+            li {
+                .h(30px);
+            }
+            a {
+                padding: 0 @distance_normal;
+            }
+        }
+    }
+    .copy {
+        height: 20px;
+        line-height: 18px;
+        color: @color_grey_dark;
+        overflow: hidden;
+    }
+}
+
+.center_wrap {
+    position: relative;
+    max-width: @pagewidth;
+    margin: 0 auto;
+}

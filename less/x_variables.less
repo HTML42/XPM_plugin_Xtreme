@@ -1,0 +1,52 @@
+//###Configs
+@amplification: 15%;
+@box_shadow: 0 0 @distance_normal rgba(0, 0, 0, 0.2);
+@media_big: ~"(min-width: 790px)";
+@media_small: ~"(max-width: 789px)";
+//
+@logo_height: 50px;
+@header_height: @logo_height + @distance_small + @distance_small;
+@navigation_height: 30px;
+@footer_height: 50px;
+
+//###Sizes
+@distance_normal: 20px;
+@distance_tiny: @distance_normal * 0.3;
+@distance_small: @distance_normal * 0.7;
+@distance_big: @distance_normal * 1.5;
+@distance_huge: @distance_normal * 3;
+@distance_huge2: @distance_normal * 4;
+//
+@fontsize_normal: 15px;
+@fontsize_tiny: @fontsize_normal * 0.6;
+@fontsize_small: @fontsize_normal * 0.8;
+@fontsize_big: @fontsize_normal * 1.25;
+@fontsize_huge: @fontsize_normal * 1.5;
+@fontsize_huge2: @fontsize_normal * 2;
+//
+@pagewidth: 1200px;
+
+//###Colors
+@color_main_normal: #3C3;
+@color_secondary_normal: #3C3;
+//
+@color_main_lighter: lighten(@color_main_light, @amplification);
+@color_main_light: lighten(@color_main_normal, @amplification);
+@color_main_dark: darken(@color_main_normal, @amplification);
+@color_main_darker: darken(@color_main_dark, @amplification);
+@color_secondary_lighter: lighten(@color_secondary_light, @amplification);
+@color_secondary_light: lighten(@color_secondary_normal, @amplification);
+@color_secondary_dark: darken(@color_secondary_normal, @amplification);
+@color_secondary_darker: darken(@color_secondary_dark, @amplification);
+//
+@color_grey_light: #EEE;
+@color_grey_dark: #888;
+//
+@color_text: #333;
+@color_bg_light: @color_grey_light;
+@color_bg_dark: @color_grey_dark;
+//
+@color_border_normal: #CCC;
+@color_border_light: @color_grey_light;
+@color_border_dark: @color_grey_dark;
+

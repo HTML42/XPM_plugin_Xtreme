@@ -16,9 +16,22 @@ class Xtreme {
 
     /** Init Xtreme-Class */
     public static function init() {
+        $package_apps = array();
+        foreach (XPM_Packages::$package_list as $package_name) {
+            $package_local_path = XPM::_ensure_trailing_slash(XPM_DIR_library) . $package_name . '/';
+            $File_packageapp = File::instance_of_first_existing_file(array(
+                        $package_local_path . '/app_config.json',
+                        $package_local_path . '/app_config.hjson',
+            ));
+            if ($File_packageapp->exists) {
+                $package_apps = $package_apps + $File_packageapp->get_json();
+            }
+        }
+        //
         $File_app_trylist = File::_create_try_list('app', array('hjson', 'json'));
         $File_app = File::instance_of_first_existing_file($File_app_trylist);
-        self::$app_config = $File_app->get_json();
+        self::$app_config = $File_app->get_json() + $package_apps;
+        //
         self::$App = new App();
         if (is_object(self::$App) && isset(self::$App->config) && isset(self::$App->config['mode']) &&
                 is_string(self::$App->config['mode'])) {
@@ -72,11 +85,11 @@ class Xtreme {
         if (strstr(Request::$requested_clean_path, '.min.')) {
             $cache_filepath = Xtreme_cache . Request::$requested_clean_path;
             if (is_file($cache_filepath)) {
-                $content = $cache_filepath;
+                $content = file_get_contents($cache_filepath);
             } else {
-                Utilities::ensure_structure(Xtreme_cache);
+                $cache_filepath_dir = implode('/', array_slice(explode('/', $cache_filepath), 0, -1));
+                Utilities::ensure_structure($cache_filepath_dir);
                 $content = isset($files) ? Xtreme::deep_concat($files) : '';
-                //
                 file_put_contents($cache_filepath, $content);
             }
         } else {
