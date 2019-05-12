@@ -28,6 +28,7 @@ foreach (File::ls(DIR_XtremeCore_classes, true, true) as $class_filepath) {
 include_once DIR_XtremeCore . 'ensure_functions.php';
 
 Request::init();
+define('BASEURL', "http" . (is_https() ? 's' : '') . "://" . $_SERVER['SERVER_NAME'] . '/' . Request::$url_path_to_script);
 Xtreme::init();
 
 Xtreme::start_mode();
