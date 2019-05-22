@@ -2,6 +2,6 @@
 
 Xtreme::$App->config['mime'] = 'text/javascript';
 
-$content = Xtreme::assets_file();
+$content = Xtreme::assets_file('js');
 
 Response::deliver($content);

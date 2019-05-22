@@ -63,14 +63,20 @@ class Xtreme {
         if (isset($files) && is_array($files)) {
             $content = '';
             foreach ($files as $filepath) {
-                $filelist = Xtreme::deep_filelist($filepath);
-                $File = File::instance_of_first_existing_file($filelist);
-                if ($File->exists) {
-                    $content .= $File->get_content() . "\r\n";
+                if (Utilities::strstarts($filepath, 'pack.')) {
+                    if (isset(Xtreme::$app_config[$filepath])) {
+                        $content .= self::deep_concat(Xtreme::$app_config[$filepath]);
+                    }
                 } else {
-                    $project_matches = glob(PROJECT_ROOT . $filepath);
-                    foreach ($project_matches as $filematch) {
-                        $content .= File::instance($filematch)->get_content() . "\r\n";
+                    $filelist = Xtreme::deep_filelist($filepath);
+                    $File = File::instance_of_first_existing_file($filelist);
+                    if ($File->exists) {
+                        $content .= $File->get_content() . "\r\n";
+                    } else {
+                        $project_matches = glob(PROJECT_ROOT . $filepath);
+                        foreach ($project_matches as $filematch) {
+                            $content .= File::instance($filematch)->get_content() . "\r\n";
+                        }
                     }
                 }
             }
@@ -78,7 +84,7 @@ class Xtreme {
         return trim($content);
     }
 
-    public static function assets_file($files = null) {
+    public static function assets_file($type, $files = null) {
         if (is_null($files)) {
             $files = isset(Xtreme::$App->config['files']) ? Xtreme::$App->config['files'] : null;
         }
@@ -90,12 +96,42 @@ class Xtreme {
                 $cache_filepath_dir = implode('/', array_slice(explode('/', $cache_filepath), 0, -1));
                 Utilities::ensure_structure($cache_filepath_dir);
                 $content = isset($files) ? Xtreme::deep_concat($files) : '';
+                //
+                if ($type == 'image') {
+                    $content = Xmin::image($content);
+                } else if ($type == 'css') {
+                    $content = Xless::compile_by_content($content, true);
+                } else if ($type == 'js') {
+                    $content = Xjs::compile_by_content($content);
+                }
+                //
                 file_put_contents($cache_filepath, $content);
             }
         } else {
             $content = isset($files) ? Xtreme::deep_concat($files) : '';
+            if ($type == 'image') {
+                
+            } else if ($type == 'css') {
+                $content = Xless::compile_by_content($content, true);
+            } else if ($type == 'js') {
+                
+            }
         }
         return $content;
+    }
+
+    public static function include_hook($hook_name) {
+        if (isset($hook_name) && is_string($hook_name)) {
+            $filepath_trylist = array(
+                PROJECT_ROOT . 'hooks/' . $hook_name . '.php',
+            );
+            foreach ($filepath_trylist as $filepath) {
+                $File = File::instance($filepath);
+                if ($File->exists) {
+                    include $File->path;
+                }
+            }
+        }
     }
 
 }
